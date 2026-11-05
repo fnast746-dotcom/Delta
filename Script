@@ -1,0 +1,47 @@
+-- THE SHOOTING STAR V9 -- CHARGEUR PAR LIEN RAW
+local URL="https://pastebin.com/raw/QjqUb695"
+local function say(msg,bad)
+warn("[ShootingStar] "..msg)
+pcall(function()
+local pg=game:GetService("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui")
+local g=pg:FindFirstChild("ShootingStarLoader")
+if not g then
+g=Instance.new("ScreenGui")g.Name="ShootingStarLoader"g.ResetOnSpawn=false
+g.DisplayOrder=10060 g.Parent=pg
+end
+local b=g:FindFirstChild("Msg")
+if not b then
+b=Instance.new("TextButton")b.Name="Msg"b.AnchorPoint=Vector2.new(.5,0)
+b.Position=UDim2.new(.5,0,0,10)b.Size=UDim2.new(.92,0,0,44)
+b.AutomaticSize=Enum.AutomaticSize.Y b.TextWrapped=true b.TextSize=16
+b.Font=Enum.Font.GothamMedium b.TextColor3=Color3.new(1,1,1)
+b.AutoButtonColor=false b.BorderSizePixel=0
+local c=Instance.new("UISizeConstraint")c.MaxSize=Vector2.new(640,420)c.Parent=b
+b.Parent=g
+b.Activated:Connect(function()g:Destroy()end)
+end
+b.BackgroundColor3=bad and Color3.fromRGB(96,18,30)or Color3.fromRGB(18,48,32)
+b.Text="THE SHOOTING STAR \194\183 "..msg.."\n(touche ce message pour le fermer)"
+end)
+end
+say("T\195\169l\195\169chargement du script\226\128\166")
+local ok,src=pcall(function()return game:HttpGet(URL)end)
+if not ok or type(src)~="string"then
+say("T\195\169l\195\169chargement impossible : "..tostring(src),true)
+return
+end
+if#src<2000 or not src:find("ShootingStar",1,true)then
+say("Ce lien ne renvoie pas le script. Utilise le lien RAW (\226\128\166/raw/\226\128\166). Re\195\167u : "..src:sub(1,120),true)
+return
+end
+local f,e=loadstring(src,"=TheShootingStar")
+if not f then
+say("Script incomplet ou ab\195\174m\195\169 : "..tostring(e),true)
+return
+end
+say("Lanc\195\169 \226\156\147  Le menu et la t\195\169l\195\169commande arrivent.")
+pcall(function()
+local g=game:GetService("Players").LocalPlayer:FindFirstChildOfClass("PlayerGui"):FindFirstChild("ShootingStarLoader")
+if g then task.delay(5,function()if g.Parent then g:Destroy()end end)end
+end)
+f()
